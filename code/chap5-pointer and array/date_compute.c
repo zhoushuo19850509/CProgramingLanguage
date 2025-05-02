@@ -7,7 +7,7 @@ void month_day(int year, int yearday, int *pmonth, int *pday);
  * 本代码的功能： 提供两个函数
      函数1 day_of_year() yyyymmdd -> day of year(某年中的一天)
      函数2 month_day()  day of year(某年中的一天) -> yyyymmdd
- * 目标：为了说明多维数组的使用方法
+ * 目标：为了说明多维数组的使用方法 
 */
 int main(){
     int date;
