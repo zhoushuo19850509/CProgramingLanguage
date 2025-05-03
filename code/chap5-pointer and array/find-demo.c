@@ -21,7 +21,7 @@ int main(int argc, char *argv[]){
         // 不断读取标准输入内容，如果匹配到argv[1],就打印，最后输出匹配的条数
         while( getlineA(line, MAXLINE) > 0 ){
             if(strstr(line, argv[1]) != NULL ){
-                printf("%s ", line);
+                printf("%s", line);
                 found++;
             }
         }

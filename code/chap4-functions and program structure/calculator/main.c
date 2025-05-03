@@ -5,7 +5,11 @@
 
 #define MAXOP 100
 
-// 实现一个计算器
+/**
+ * 功能： 实现一个计算器
+ * 目标： 1.为了说明external variables的用法
+ *       2.为了说明Header files的用法
+ */
 int main(){
     int type; 
     double op2;
