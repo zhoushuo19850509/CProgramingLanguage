@@ -7,6 +7,10 @@ int strindex(char s[], char t[]);
 // 要匹配的关键字
 char pattern[] = "return";
 
+/**
+ * 功能： 字符串匹配
+ * 目标： 为了说明function的用法
+*/
 int main(){
     printf("start matching ...\n");
 
