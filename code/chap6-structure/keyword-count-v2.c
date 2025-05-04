@@ -27,7 +27,7 @@ int getch(void);
 void ungetch(int c);
 
 /**
- * 功能： 统计标注输入的C语言关键字(char/const/define这些)
+ * 功能： 统计标准输入的C语言关键字(char/const/define这些)
  * 目标： 为了说明pointer to struct的用法
  * 备注： 和v1不同的是binsearch()函数的不同
  */

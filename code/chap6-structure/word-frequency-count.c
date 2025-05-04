@@ -1,80 +1,91 @@
 #include <stdio.h>
-#include <ctype.h>
 #include <string.h>
+#include <ctype.h>
+#include <stdlib.h>
 
-#define NKEYS 10   // 我们暂时统计10个关键字
 #define MAXWORD 100 //从标准输入读取的word长度，最长是100个字节 
 
-struct key{
-    char *word;
+
+// binary tree的基本数据结构
+struct tnode{
+    char *name;
     int count;
-}keytab[NKEYS] = {
-    "auto",0,
-    "break",0,
-    "case",0,
-    "char",0,
-    "const",0,
-    "continue",0,
-    "default",0,
-    "void",0,
-    "while",0,
-    "for",0,
+    struct tnode *left;
+    struct tnode *right;
 };
 
-int binsearch(char *word , struct key tab[], int n);
+// print the whole tree in order
+void treeprint(struct tnode *tree);
+// add a word onto the tree
+struct tnode *addtree(struct tnode *tree, char *name);
+// read a word from the stardard input
 int getword(char *word, int lim);
+// 申请一段内存，保存树节点
+struct tnode *talloc();
 int getch(void);
 void ungetch(int c);
 
 /**
- * 功能： 统计标准输入的C语言关键字(char/const/define这些)
- * 目标： 为了说明array of struct的用法
+ * 功能： 统计从标准输入读取的word，进行计数，并按照word升序，打印各个word的计数
+ * 目标：为了说明struct self-reference。同时引入了基本数据结构： binary tree
  */
 int main(){
-    int n;
     char word[MAXWORD];
+    struct tnode *root;
+    root = NULL;
 
-    /**
-     * 调用getword()不断从标准输入读取word
-     * 调用binsearch()判断这个word是否为我们要统计的关键字
-     * 如果是关键字，就纳入统计
-    */
+    // 不断从标准输入中读取word，如果是符合规范的word，就放到tree上去
     while(getword(word, MAXWORD) != EOF){
         if(isalpha(word[0])){
-            if((n = binsearch(word, keytab, NKEYS)) >=0){
-                keytab[n].count++;
-            }
+            root = addtree(root, word);
         }
     }
-    // 打印各个关键字的统计结果
-    for(n = 0; n < NKEYS; n++){
-        if(keytab[n].count > 0){
-            printf("%s : %d \n", keytab[n].word, keytab[n].count);
-        }
-    }
-    printf("\n");
+    // 打印整棵树
+    treeprint(root);
+    return 0;
 }
 
-/* 从数组v中找出元素x */
-int binsearch(char *word , struct key tab[], int n){
-    int mid, low, high;
 
-    low = 0;
-    high = n - 1;
+/**
+ * print the whole tree in-order
+ * 这个in-order的效果，就是按照name进行升序排列
+ */
+void treeprint(struct tnode *p){
+    if(p != NULL){
+        treeprint(p->left);
+        printf("%4d %s \n", p->count, p->name);
+        treeprint(p->right);
+    }
+}
+
+/**
+ * add a word onto the tree
+ * 效果就是name比当前节点name小的放在左边；比当前节点大的放在右边
+ * 和当前节点一样的(name相同)，计数+1
+ */
+struct tnode *addtree(struct tnode *p, char *w){
+
     int cond;
-
-    while(low <= high){
-        mid = (low + high) / 2;
-        if( (cond = strcmp(word, tab[mid].word)) < 0){
-            high = mid - 1;
-        }else if(cond > 0){
-            low = mid + 1;
-        }else{
-            return mid;
-        }
+    if(p == NULL){
+        p = talloc(); // 申请一段内存，保存这个tree node
+        p->name = strdup(w);
+        p->count = 1;
+        p->left = NULL;
+        p->right = NULL;
+    }else if( (cond = strcmp(w,p->name)) == 0){
+        p->count++;
+    }else if(cond < 0){
+        p->left = addtree(p->left, w);
+    }else{
+        p->right = addtree(p->right, w);
     }
-    return -1;
+    return p;
 }
+
+struct tnode *talloc(){
+    return (struct tnode *)malloc(sizeof(struct tnode));
+}
+
 
 /**
  * 从标准输入中读取一个word
@@ -82,7 +93,7 @@ int binsearch(char *word , struct key tab[], int n){
  * @param lim 从标准输入读取的最长字符长度
  * @return 返回word对应的字符串的首个char
  */
-int getword(char *word, int lim){
+ int getword(char *word, int lim){
     int c;
     char *w = word; // 这个指针指向读取到的word(字符串)
 
