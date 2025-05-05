@@ -1,0 +1,7 @@
+hello
+hi
+gogogo
+restaurant
+
+cat: can't open file: c.txt 
+ 
