@@ -24,7 +24,7 @@ int main(int argc, char *argv[]){
                 return 1;
             }else{
                 filecopy(fp, stdout);
-                fclose(fp);
+                fclose(fp);  // 关闭打开的文件，避免资源泄露
             }
         }
     }
