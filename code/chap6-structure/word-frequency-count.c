@@ -27,7 +27,8 @@ void ungetch(int c);
 
 /**
  * 功能： 统计从标准输入读取的word，进行计数，并按照word升序，打印各个word的计数
- * 目标：为了说明struct self-reference。同时引入了基本数据结构： binary tree
+ * 目标：为了说明struct self-reference。(struct中的某个元素，是struct本身)
+ * 备注： 同时引入了基本数据结构： binary tree
  */
 int main(){
     char word[MAXWORD];
