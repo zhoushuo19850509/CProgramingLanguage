@@ -11,8 +11,7 @@
  */
 int main(){
     printf("start-demo start ... \n");
-    // char *name = "a.txt";  // 访问一个文件
-    char *name = "aaa";    // 访问一个目录
+    char *name = "a.txt";  // 访问一个文件
     struct stat stbuf;
 
     if(stat(name, &stbuf) == -1){
